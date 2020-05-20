@@ -8,14 +8,6 @@ const DEFAULT_DEPLOY_BRANCH = 'master'
 
 async function run(): Promise<void> {
   try {
-    const accessToken = core.getInput('access-token')
-    if (!accessToken) {
-      core.setFailed(
-        'No personal access token found. Please provide one by setting the `access-token` input for this action.',
-      )
-      return
-    }
-
     let deployBranch = core.getInput('deploy-branch')
     if (!deployBranch) deployBranch = DEFAULT_DEPLOY_BRANCH
 
@@ -60,20 +52,9 @@ async function run(): Promise<void> {
     console.log(`Deploying to repo: ${repo} and branch: ${deployBranch}`)
     console.log('You can configure the deploy branch by setting the `deploy-branch` input for this action.')
 
-    await exec.exec(`git init`, [], {cwd: './public'})
-    await exec.exec(`git config user.name`, [github.context.actor], {
-      cwd: './public',
-    })
-    await exec.exec(`git config user.email`, [`${github.context.actor}@users.noreply.github.com`], {cwd: './public'})
+    await exec.exec(`npm i -g netlify-cli`)
+    await exec.exec(`netlify deploy`)
 
-    await exec.exec(`git add`, ['.'], {cwd: './public'})
-    await exec.exec(`git commit`, ['-m', `deployed via Gatsby Publish Action 🎩 for ${github.context.sha}`], {
-      cwd: './public',
-    })
-
-    await exec.exec(`git push`, ['-f', repoURL, `master:${deployBranch}`], {
-      cwd: './public',
-    })
     console.log('Finished deploying your site.')
 
     console.log('Enjoy! ✨')

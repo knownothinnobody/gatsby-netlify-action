@@ -19,10 +19,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: enriikke/gatsby-gh-pages-action@v2
-        with:
-          access-token: ${{ secrets.ACCESS_TOKEN }}
+      - uses: actions/checkout@v2
+      - uses: knownothinnobody/gatsby-netlify-action@v2
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 ```
 
 > **NOTE:** In order to support `npm` and `yarn`, this Action relies on having a
@@ -35,10 +35,10 @@ jobs:
 This Action is fairly simple but it does provide you with a couple of
 configuration options:
 
-- **access-token**: A [GitHub Personal Access Token][github-access-token] with
+- **netlify-access-token**: A [Netlify Personal Access Token][netlify-access-token] with
   the `repo` scope. This is **required** to push the site to your repo after
   Gatsby finish building it. You should store this as a [secret][github-repo-secret]
-  in your repository. Provided as an [input][github-action-input].
+  in your repository. Provided as an [env-variable][github-env-variable].
 
 - **deploy-branch**: The branch expected by GitHub to have the static files
   needed for your site. For org and user pages it should always be `master`.
@@ -61,19 +61,9 @@ configuration options:
   Provided as an [input][github-action-input]
   Defaults to **false**
 
-### Org or User Pages
+### Path Prefix
 
-Create a repository with the format `<YOUR/ORG USERNAME>.github.io`, push your
-Gatsby source code to a branch other than `master` and add this GitHub Action to
-your workflow! 🚀😃
-
-### Repository Pages
-
-Repo pages give you the option to push your static site to either `master` or
-`gh-pages` branches. They also work a little different because the URL includes
-a trailing path with the repository name, like
-`https://username.github.io/reponame/`. You need to tell Gatsby what the path
-prefix is via `gatsby-config.js`:
+You need to tell Gatsby what the path prefix is via `gatsby-config.js`:
 
 ```js
 module.exports = {
@@ -96,13 +86,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: enriikke/gatsby-gh-pages-action@v2
+      - uses: actions/checkout@v2
+      - uses: knownothinnobody/gatsby-netlify-action@v2
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         with:
-          access-token: ${{ secrets.ACCESS_TOKEN }}
           deploy-branch: gh-pages
           gatsby-args: --prefix-paths
 ```
+
+###  Validation on Pull Request
 
 Provides build validation on `pull request` if required:
 
@@ -118,10 +111,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: enriikke/gatsby-gh-pages-action@v2
+      - uses: actions/checkout@v2
+      - uses: knownothinnobody/gatsby-gh-pages-action@v2
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         with:
-          access-token: ${{ secrets.ACCESS_TOKEN }}
           deploy-branch: gh-pages
           gatsby-args: --prefix-paths
           skip-publish: true
@@ -160,7 +154,8 @@ to work (as mentioned at the beginning). Ultimately, this is what calls `gatsby 
 Have fun building! ✨
 
 [gatsby-build-docs]: https://www.gatsbyjs.org/docs/gatsby-cli/#build
-[github-access-token]: https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line
+[netlify-access-token]: https://docs.netlify.com/cli/get-started/#obtain-a-token-in-the-netlify-ui
+[github-env-variable]: https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables
 [github-action-input]: https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#using-encrypted-secrets-in-a-workflow
 [github-pages-domain-docs]: https://help.github.com/en/articles/using-a-custom-domain-with-github-pages
 [github-repo-secret]: https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#creating-encrypted-secrets

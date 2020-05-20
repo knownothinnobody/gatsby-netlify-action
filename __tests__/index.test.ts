@@ -52,23 +52,11 @@ afterAll(() => {
 beforeEach(() => {
   jest.resetModules()
   inputs = {
-    'access-token': 'SECRET',
     'skip-publish': 'true',
   }
 })
 
 describe('Gatsby Publish action', () => {
-  it('returns an error when no access token is given', async () => {
-    inputs['access-token'] = ''
-    const setFailedSpy = jest.spyOn(core, 'setFailed')
-
-    await run()
-
-    expect(setFailedSpy).toBeCalledWith(
-      'No personal access token found. Please provide one by setting the `access-token` input for this action.',
-    )
-  })
-
   it('skips if deploy branch is the same as the current git head', async () => {
     inputs['deploy-branch'] = 'some-ref'
     github.context.ref = 'refs/heads/some-ref'
