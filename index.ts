@@ -1,6 +1,5 @@
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
-import * as github from '@actions/github'
 import * as io from '@actions/io'
 import * as ioUtil from '@actions/io/lib/io-util'
 
@@ -8,15 +7,6 @@ const DEFAULT_DEPLOY_BRANCH = 'master'
 
 async function run(): Promise<void> {
   try {
-    let deployBranch = core.getInput('deploy-branch')
-    if (!deployBranch) deployBranch = DEFAULT_DEPLOY_BRANCH
-
-    if (github.context.ref === `refs/heads/${deployBranch}`) {
-      console.log(`Triggered by branch used to deploy: ${github.context.ref}.`)
-      console.log('Nothing to deploy.')
-      return
-    }
-
     const pkgManager = (await ioUtil.exists('./yarn.lock')) ? 'yarn' : 'npm'
     console.log(`Installing your site's dependencies using ${pkgManager}.`)
     await exec.exec(`${pkgManager} install`)
