@@ -149,6 +149,8 @@ assumption.
 Additionally, a `build` script on `package.json` is expected for this Action to
 to work (as mentioned at the beginning). Ultimately, this is what calls `gatsby build`.
 
+Finally, this script needs a `netlify.toml` at the root of your project in order to deploy properly.
+
 ## That's It
 
 Have fun building! ✨
