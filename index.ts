@@ -45,13 +45,6 @@ async function run(): Promise<void> {
       return
     }
 
-    const deployRepo = core.getInput('deploy-repo')
-    const repo = `${github.context.repo.owner}/${deployRepo || github.context.repo.repo}`
-    const repoURL = `https://${accessToken}@github.com/${repo}.git`
-    console.log('Ready to deploy your new shiny site!')
-    console.log(`Deploying to repo: ${repo} and branch: ${deployBranch}`)
-    console.log('You can configure the deploy branch by setting the `deploy-branch` input for this action.')
-
     await exec.exec(`npm i -g netlify-cli`)
     await exec.exec(`netlify deploy`)
 
