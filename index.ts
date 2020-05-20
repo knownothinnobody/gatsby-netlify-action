@@ -3,8 +3,6 @@ import * as exec from '@actions/exec'
 import * as io from '@actions/io'
 import * as ioUtil from '@actions/io/lib/io-util'
 
-const DEFAULT_DEPLOY_BRANCH = 'master'
-
 async function run(): Promise<void> {
   try {
     const pkgManager = (await ioUtil.exists('./yarn.lock')) ? 'yarn' : 'npm'
