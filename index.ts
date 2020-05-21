@@ -35,7 +35,9 @@ async function run(): Promise<void> {
 
     console.log('Starting Netlify Deploy')
 
-    await exec.exec(`npm run deploy --prod`)
+    await exec.exec(`npm run deploy -- --prod`)
+
+    await exec.exec(`echo $NETLIFY_AUTH_TOKEN`)
 
     console.log('Finished deploying your site.')
 
