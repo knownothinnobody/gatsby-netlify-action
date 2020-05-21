@@ -47,17 +47,6 @@ configuration options:
   Gatsby finish building it. You should store this as a [secret][github-repo-secret]
   in your repository. Provided as an [env-variable][github-env-variable].
 
-- **deploy-branch**: The branch expected by GitHub to have the static files
-  needed for your site. For org and user pages it should always be `master`.
-  This is where the output of `gatsby build` will be pushed to. Provided as an
-  [input][github-action-input].
-  Defaults to `master`.
-
-- **deploy-repo**: The repository expected by GitHub to have the static files
-  needed for your site.
-  Provided as an [input][github-action-input].
-  Defaults to the same repository that runs this action.
-
 - **gatsby-args**: Additional arguments that get passed to `gatsby build`. See the
   [Gatsby documentation][gatsby-build-docs] for a list of allowed options.
   Provided as an [input][github-action-input].
@@ -74,7 +63,7 @@ You need to tell Gatsby what the path prefix is via `gatsby-config.js`:
 
 ```js
 module.exports = {
-  pathPrefix: "/reponame",
+  pathPrefix: "/example",
 }
 ```
 
@@ -99,7 +88,6 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         with:
           access-token: $${{ secrets.ACCESS_TOKEN }}
-          deploy-branch: gh-pages
           gatsby-args: --prefix-paths
 ```
 
@@ -125,7 +113,6 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         with:
           access-token: $${{ secrets.ACCESS_TOKEN }}
-          deploy-branch: gh-pages
           gatsby-args: --prefix-paths
           skip-publish: true
 ```
