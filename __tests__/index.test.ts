@@ -52,11 +52,30 @@ afterAll(() => {
 beforeEach(() => {
   jest.resetModules()
   inputs = {
+    'site-name': 'test-site',
     'skip-publish': 'true',
   }
 })
 
 describe('Gatsby Publish action', () => {
+  it('returns an error when no site name is given', async () => {
+    inputs['site-name'] = ''
+    const setFailedSpy = jest.spyOn(core, 'setFailed')
+
+    await run()
+
+    expect(setFailedSpy).toBeCalledWith(
+      'No site name found. Please provide one by setting the `site-name` input for this action.',
+    )
+  })
+
+  it('skips if deploy branch is the same as the current git head', async () => {
+    inputs['deploy-branch'] = 'some-ref'
+    github.context.ref = 'refs/heads/some-ref'
+
+    await expect(run()).resolves.not.toThrowError()
+  })
+
   it('calls gatsby build without args', async () => {
     inputs['gatsby-args'] = ''
 

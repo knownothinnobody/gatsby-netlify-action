@@ -5,6 +5,12 @@ import * as ioUtil from '@actions/io/lib/io-util'
 
 async function run(): Promise<void> {
   try {
+    const siteName = core.getInput('site-name')
+    if (!siteName) {
+      core.setFailed('No site name found. Please provide one by setting the `site-name` input for this action.')
+      return
+    }
+
     const pkgManager = (await ioUtil.exists('./yarn.lock')) ? 'yarn' : 'npm'
     console.log(`Installing your site's dependencies using ${pkgManager}.`)
     await exec.exec(`${pkgManager} install`)
@@ -35,9 +41,11 @@ async function run(): Promise<void> {
 
     console.log('Starting Netlify Deploy')
 
+    await exec.exec(`netlify link --name ${siteName}`)
+
     await exec.exec(`npm run deploy -- --prod`)
 
-    await exec.exec(`echo $NETLIFY_AUTH_TOKEN`)
+    await exec.exec(`netlify unlink`)
 
     console.log('Finished deploying your site.')
 

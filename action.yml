@@ -4,6 +4,9 @@ branding:
   icon: "book-open"
   color: "purple"
 inputs:
+  site-name:
+    description: "Required name of the site you are deploying to"
+    required: true
   gatsby-args:
     description: "Additional arguments that get passed to `gatsby build`."
     required: false
