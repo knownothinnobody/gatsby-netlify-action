@@ -53,6 +53,8 @@ async function run(): Promise<void> {
       return
     }
 
+    console.log('Starting Netlify Deploy')
+
     await exec.exec(`npm i -g netlify-cli`)
     await exec.exec(`netlify deploy`)
 
