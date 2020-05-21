@@ -41,11 +41,11 @@ async function run(): Promise<void> {
 
     console.log('Starting Netlify Deploy')
 
-    await exec.exec(`netlify link --name ${siteName}`)
+    await exec.exec(`npm run link --name ${siteName}`)
 
     await exec.exec(`npm run deploy -- --prod`)
 
-    await exec.exec(`netlify unlink`)
+    await exec.exec(`npm run unlink`)
 
     console.log('Finished deploying your site.')
 
