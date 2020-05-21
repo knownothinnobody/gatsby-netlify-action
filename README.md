@@ -23,8 +23,6 @@ jobs:
       - uses: knownothinnobody/gatsby-netlify-action@v2
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        with:
-          access-token: $${{ secrets.ACCESS_TOKEN }}
 ```
 
 > **NOTE:** In order to support `npm` and `yarn`, this Action relies on having a
@@ -36,11 +34,6 @@ jobs:
 
 This Action is fairly simple but it does provide you with a couple of
 configuration options:
-
-- **access-token**: A [Personal Access Token][access-token] with
-  the `repo` scope. This is **required** to push the site to your repo after
-  Gatsby finish building it. You should store this as a [secret][github-repo-secret]
-  in your repository. Provided as an [input][github-access-token].
 
 - **netlify-access-token**: A [Netlify Personal Access Token][netlify-access-token] with
   the `repo` scope. This is **required** to push the site to your repo after
@@ -87,7 +80,6 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         with:
-          access-token: $${{ secrets.ACCESS_TOKEN }}
           gatsby-args: --prefix-paths
 ```
 
@@ -112,7 +104,6 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         with:
-          access-token: $${{ secrets.ACCESS_TOKEN }}
           gatsby-args: --prefix-paths
           skip-publish: true
 ```
@@ -152,7 +143,6 @@ Finally, this script needs a `netlify.toml` at the root of your project in order
 Have fun building! ✨
 
 [gatsby-build-docs]: https://www.gatsbyjs.org/docs/gatsby-cli/#build
-[netlify-access-token]: https://docs.netlify.com/cli/get-started/#obtain-a-token-in-the-netlify-ui
 [github-access-token]: https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line
 [github-env-variable]: https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables
 [github-action-input]: https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#using-encrypted-secrets-in-a-workflow
