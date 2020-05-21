@@ -4,6 +4,9 @@ branding:
   icon: "book-open"
   color: "purple"
 inputs:
+  access-token:
+    description: "A personal access token needed to octokit."
+    required: true
   deploy-branch:
     description: "The branch expected by GitHub to have the static files needed for your site."
     required: false
